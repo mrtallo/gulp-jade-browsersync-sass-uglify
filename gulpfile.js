@@ -24,7 +24,7 @@ gulp.task('serve', ['sass','templates','compress'], function() {
     gulp.watch("js/**/*.js", ['js-watch']);
     gulp.watch("scss/**/*.scss", ['sass']);
     gulp.watch("./build/**/*.html").on('change', browserSync.reload);
-    gulp.watch('./jade/**/*.jade',['jade-watch']);
+    gulp.watch('./jade/**/!(_)*.jade',['jade-watch']);
 });
 
 // Compile sass into CSS & auto-inject into browsers .on('error', sass.logError)
@@ -37,7 +37,7 @@ gulp.task('sass', function() {
 });
 
 gulp.task('templates', function() {
-  return gulp.src('./jade/**/*.jade')
+  return gulp.src('./jade/**/!(_)*.jade')
     .pipe(plumber())
     .pipe(jade({
       pretty: true
