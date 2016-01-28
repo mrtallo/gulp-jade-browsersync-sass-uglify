@@ -1,3 +1,9 @@
+//Settings
+
+var environment ='./build/';
+    build_loc   = './build';
+
+
 var gulp        = require('gulp'),
     browserSync = require('browser-sync').create(),
     sass        = require('gulp-sass'),
@@ -11,7 +17,7 @@ var gulp        = require('gulp'),
 gulp.task('serve', ['sass','templates','compress'], function() {
 
     browserSync.init({
-        server: "./build/"
+        server: environment
     });
 
   
@@ -24,10 +30,9 @@ gulp.task('serve', ['sass','templates','compress'], function() {
 // Compile sass into CSS & auto-inject into browsers .on('error', sass.logError)
 gulp.task('sass', function() {
     return gulp.src("scss/**/*.scss")
-        .pipe(plumber())
-        .pipe(sass())
+        .pipe(sass({outputStyle : 'compressed'}).on('error', sass.logError))
         .pipe(prefix("last 15 version", "> 1%", "ie 8", "ie 7"))
-        .pipe(gulp.dest("./build/css/"))
+        .pipe(gulp.dest(build_loc))
         .pipe(browserSync.stream());
 });
 
@@ -37,13 +42,13 @@ gulp.task('templates', function() {
     .pipe(jade({
       pretty: true
     }))
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest(build_loc));
 });
 
 gulp.task('compress', function() {
   return gulp.src('js/**/*.js')
     .pipe(uglify())
-    .pipe(gulp.dest('./build/js/'));
+    .pipe(gulp.dest(build_loc));
 });
 
 
